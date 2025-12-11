@@ -15,7 +15,7 @@ export default function TournamentPage() {
   return (
     <div className="min-h-screen bg-brand-dark pb-20">
       {/* Header */}
-      <div className="pt-32 pb-12 px-4 text-center bg-gradient-to-b from-brand-accent/10 to-transparent">
+      <div className="pt-32 pb-12 px-4 bg-gradient-to-b from-brand-accent/10 to-transparent">
         <div className="max-w-7xl mx-auto">
           <Link
             href="/"
@@ -24,12 +24,14 @@ export default function TournamentPage() {
             <ArrowLeft className="w-5 h-5" />
             返回首页
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            2025 固搭羽毛球团体赛
-          </h1>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            单循环积分赛制 · 4支战队 · 巅峰对决
-          </p>
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              2025 固搭羽毛球团体赛
+            </h1>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              单循环积分赛制 · 4支战队 · 巅峰对决
+            </p>
+          </div>
         </div>
       </div>
 

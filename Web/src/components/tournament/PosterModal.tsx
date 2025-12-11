@@ -179,140 +179,188 @@ function PosterContent({ teamId }: { teamId: TeamId }) {
 
   if (!standing) return null;
 
-  const getRankBadge = (rank: number) => {
-    if (rank === 1) {
-      return (
-        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-600 flex items-center justify-center text-2xl font-bold text-yellow-900 shadow-xl border-4 border-yellow-200/20">
-          1
-        </div>
-      );
-    } else if (rank === 2) {
-      return (
-        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center text-2xl font-bold text-gray-900 shadow-xl border-4 border-gray-200/20">
-          2
-        </div>
-      );
-    } else if (rank === 3) {
-      return (
-        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-300 to-orange-600 flex items-center justify-center text-2xl font-bold text-orange-900 shadow-xl border-4 border-orange-200/20">
-          3
-        </div>
-      );
-    } else {
-      return (
-        <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center text-2xl font-bold text-gray-400 shadow-xl border-4 border-white/5">
-          4
-        </div>
-      );
-    }
+  // 获取排名信息
+  const getRankInfo = (rank: number) => {
+    const configs = {
+      1: {
+        emoji: '👑',
+        title: '冠军',
+        subtitle: 'CHAMPION',
+        bgGradient: 'from-yellow-500/20 via-yellow-600/10 to-transparent',
+        accentColor: '#F59E0B',
+        badgeGradient: 'from-yellow-400 to-yellow-600',
+        textColor: 'text-yellow-400',
+      },
+      2: {
+        emoji: '🥈',
+        title: '亚军',
+        subtitle: 'RUNNER-UP',
+        bgGradient: 'from-gray-400/20 via-gray-500/10 to-transparent',
+        accentColor: '#9CA3AF',
+        badgeGradient: 'from-gray-300 to-gray-500',
+        textColor: 'text-gray-300',
+      },
+      3: {
+        emoji: '🥉',
+        title: '季军',
+        subtitle: 'THIRD PLACE',
+        bgGradient: 'from-orange-500/20 via-orange-600/10 to-transparent',
+        accentColor: '#F97316',
+        badgeGradient: 'from-orange-400 to-orange-600',
+        textColor: 'text-orange-400',
+      },
+      4: {
+        emoji: '',
+        title: '第四名',
+        subtitle: 'FOURTH PLACE',
+        bgGradient: 'from-gray-600/10 via-gray-700/5 to-transparent',
+        accentColor: '#6B7280',
+        badgeGradient: 'from-gray-600 to-gray-700',
+        textColor: 'text-gray-400',
+      },
+    };
+    return configs[rank as keyof typeof configs] || configs[4];
   };
 
-  const getRankTextClass = (rank: number) => {
-    if (rank === 1) return 'text-yellow-400';
-    if (rank === 2) return 'text-gray-300';
-    if (rank === 3) return 'text-orange-400';
-    return 'text-gray-500';
-  };
+  const rankInfo = getRankInfo(standing.rank);
 
   return (
-    <>
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0F1115] to-[#1F2937] z-0"></div>
-      <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/20 rounded-full blur-[80px]"></div>
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-secondary/10 rounded-full blur-[80px]"></div>
+    <div className="w-[375px] h-[667px] bg-[#0F1115] relative overflow-hidden flex flex-col">
+      {/* Background Layers */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0F1115] via-[#1a1d24] to-[#0F1115]"></div>
+      <div className={`absolute inset-0 bg-gradient-to-br ${rankInfo.bgGradient}`}></div>
+      
+      {/* Decorative Circles */}
+      <div 
+        className="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-30"
+        style={{ backgroundColor: rankInfo.accentColor }}
+      ></div>
+      <div 
+        className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full blur-3xl opacity-20"
+        style={{ backgroundColor: rankInfo.accentColor }}
+      ></div>
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col h-[667px] p-8">
-        {/* Header */}
-        <div className="text-center mb-10 mt-4">
-          <h2 className="text-brand-accent tracking-[0.2em] text-xs font-bold uppercase mb-2">
-            GuDa Badminton Club 2025
-          </h2>
-          <h1 className="text-2xl font-bold text-white">固搭羽毛球团体赛</h1>
-          <div className="mt-2 inline-block px-3 py-1 bg-white/10 rounded-full text-xs text-gray-300">
-            最终战报 · Final Report
+      {/* Content Container */}
+      <div className="relative z-10 flex flex-col h-full p-6">
+        
+        {/* Top Section - Brand */}
+        <div className="text-center pt-4 pb-6">
+          <div className="inline-block px-4 py-1 rounded-full bg-white/5 border border-white/10 mb-3">
+            <p className="text-[10px] font-bold text-brand-accent tracking-widest uppercase">
+              GuDa Badminton Club 2025
+            </p>
           </div>
+          <h1 className="text-xl font-bold text-white tracking-wide">
+            固搭羽毛球团体赛
+          </h1>
         </div>
 
-        {/* Main Card */}
-        <div className="flex-1 flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10 relative overflow-hidden mb-8">
-          {/* Decorative Elements */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-accent to-transparent opacity-50"></div>
-
+        {/* Main Content - Hero Section */}
+        <div className="flex-1 flex flex-col items-center justify-center py-8">
+          
           {/* Rank Badge */}
-          <div className="mb-6 transform scale-150">{getRankBadge(standing.rank)}</div>
+          <div className="mb-6">
+            <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${rankInfo.badgeGradient} flex items-center justify-center shadow-2xl relative`}>
+              <div className="absolute inset-0 bg-white/20 rounded-2xl blur-sm"></div>
+              <span className="text-4xl relative z-10">{rankInfo.emoji || standing.rank}</span>
+            </div>
+          </div>
 
-          {/* Team Info */}
-          <div className="text-center mb-8">
+          {/* Rank Title */}
+          <div className="mb-8 text-center">
+            <div className={`text-3xl font-black ${rankInfo.textColor} mb-1 tracking-tight`}>
+              {rankInfo.title}
+            </div>
+            <div className="text-xs font-semibold text-gray-500 tracking-widest uppercase">
+              {rankInfo.subtitle}
+            </div>
+          </div>
+
+          {/* Team Name */}
+          <div className="mb-10 text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
-              <div
-                className={`w-10 h-10 rounded-lg bg-${team.theme.primary} flex items-center justify-center text-sm font-bold text-white shadow-lg`}
+              <div 
+                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${team.theme.gradient} flex items-center justify-center text-xl font-bold text-white shadow-xl`}
               >
                 {team.logo}
               </div>
-              <h2 className="text-3xl font-bold text-white">{team.name}</h2>
-            </div>
-            <p
-              className={`text-xl font-bold tracking-wide uppercase ${getRankTextClass(standing.rank)}`}
-            >
-              {standing.rank === 1 && '👑 年度总冠军 Champion'}
-              {standing.rank === 2 && '🥈 年度亚军 Runner-up'}
-              {standing.rank === 3 && '🥉 年度季军 Third Place'}
-              {standing.rank === 4 && '殿军 Fourth Place'}
-            </p>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 w-full text-center border-t border-white/10 pt-6 mb-6">
-            <div>
-              <div className="text-xs text-gray-400 mb-1">胜 / 负</div>
-              <div className="text-lg font-bold text-white font-mono">
-                {standing.won} - {standing.lost}
-              </div>
-            </div>
-            <div>
-              <div className="text-xs text-gray-400 mb-1">净胜分</div>
-              <div
-                className={`text-lg font-bold font-mono ${standing.pointsDiff >= 0 ? 'text-green-400' : 'text-red-400'}`}
-              >
-                {standing.pointsDiff >= 0 ? '+' : ''}
-                {standing.pointsDiff}
-              </div>
-            </div>
-            <div>
-              <div className="text-xs text-gray-400 mb-1">总积分</div>
-              <div className="text-lg font-bold text-brand-accent font-mono">
-                {standing.points}
-              </div>
+              <h2 className="text-4xl font-black text-white tracking-tight">
+                {team.name}
+              </h2>
             </div>
           </div>
 
-          {/* Members */}
-          <div className="w-full text-center">
-            <p className="text-xs text-gray-500 mb-2">Team Members</p>
-            <p className="text-xs text-gray-300 leading-relaxed px-4">
-              队长：{team.captain} | 队员：{team.members.join('、')}
-            </p>
+          {/* Stats Grid */}
+          <div className="w-full max-w-[300px] bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5">
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-black text-white mb-1">
+                  {standing.won}
+                </div>
+                <div className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
+                  胜场
+                </div>
+              </div>
+              
+              <div className="text-center border-x border-white/10">
+                <div className={`text-2xl font-black mb-1 ${standing.pointsDiff >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {standing.pointsDiff >= 0 ? '+' : ''}{standing.pointsDiff}
+                </div>
+                <div className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
+                  净胜分
+                </div>
+              </div>
+              
+              <div className="text-center">
+                <div className="text-2xl font-black text-brand-accent mb-1">
+                  {standing.points}
+                </div>
+                <div className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">
+                  积分
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Bottom Section - Team Info & QR */}
+        <div className="pb-4">
+          {/* Team Members */}
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 mb-4">
+            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-2">
+              Team Members
+            </div>
+            <div className="text-xs text-gray-300 leading-relaxed">
+              <span className="text-white font-semibold">队长：</span>{team.captain}
+              <br />
+              <span className="text-white font-semibold">队员：</span>{team.members.join(' · ')}
+            </div>
+          </div>
+
+          {/* Footer with QR */}
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-xs font-semibold text-white mb-0.5">
+                扫码查看详情
+              </div>
+              <div className="text-[10px] text-gray-500">
+                gudaclub.com
+              </div>
+            </div>
+            <div className="w-14 h-14 bg-white rounded-lg p-1 shadow-xl">
+              <QRCodeSVG
+                value="https://gudaclub.com/tournament"
+                size={48}
+                level="H"
+                includeMargin={false}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between mt-auto">
-          <div className="text-left">
-            <p className="text-xs text-gray-500">扫码查看详细赛程</p>
-            <p className="text-[10px] text-gray-600 mt-1">www.gudaclub.com</p>
-          </div>
-          <div className="w-16 h-16 bg-white p-1 rounded-lg">
-            <QRCodeSVG
-              value="https://gudaclub.com/tournament"
-              size={56}
-              level="H"
-              includeMargin={false}
-            />
-          </div>
-        </div>
       </div>
-    </>
+    </div>
   );
 }
 
