@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="max-w-4xl mx-auto px-4 text-center">
         <h2 className="text-3xl font-bold text-white mb-6">加入观赛社群</h2>
         <p className="text-gray-400 mb-8">
-          扫码加入"固搭2025团体赛"官方微信群，获取实时比分与战报。
+          扫码加入「固搭2025团体赛」官方微信群，获取实时比分与战报。
         </p>
         <div className="inline-block p-4 bg-white rounded-lg mb-8">
           {/* QR Code Placeholder */}

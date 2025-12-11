@@ -144,6 +144,7 @@ export default function PosterModal({ isOpen, onClose }: PosterModalProps) {
           {posterImage && (
             <div className="text-center">
               <div className="mb-4 rounded-lg overflow-hidden shadow-lg mx-auto bg-black">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={posterImage} alt="战报海报" className="w-full h-auto" />
               </div>
               <p className="text-xs text-gray-500 mb-4">长按图片保存或分享给朋友</p>
