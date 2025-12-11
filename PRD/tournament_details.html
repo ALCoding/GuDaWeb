@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛事详情 - 2025固搭羽毛球团体赛</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0F1115',
+                            light: '#1F2937',
+                            accent: '#3B82F6', 
+                            'accent-dark': '#1D4ED8',
+                            'accent-glow': '#60A5FA',
+                            secondary: '#06B6D4',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0F1115;
+            color: #ffffff;
+        }
+        .glass-nav {
+            background: rgba(15, 17, 21, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+        }
+        .table-row-hover:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        .team-card-small {
+            transition: all 0.3s ease;
+        }
+        .team-card-small:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        /* Rank Badge Styles */
+        .rank-badge {
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        .rank-1 {
+            background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
+            color: #78350F;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+        }
+        .rank-2 {
+            background: linear-gradient(135deg, #E5E7EB 0%, #9CA3AF 100%);
+            color: #1F2937;
+            box-shadow: 0 0 10px rgba(156, 163, 175, 0.4);
+        }
+        .rank-3 {
+            background: linear-gradient(135deg, #FDBA74 0%, #B45309 100%);
+            color: #431407;
+            box-shadow: 0 0 10px rgba(180, 83, 9, 0.4);
+        }
+        .rank-4 {
+             background: rgba(255, 255, 255, 0.1);
+             color: #9CA3AF;
+             border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Modal Styles */
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-brand-accent selection:text-white pb-20">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <a href="prototype_preview.html" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        返回首页
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-xl font-bold tracking-tighter text-white">GuDa<span class="text-brand-accent">.</span> 赛事中心</span>
+                </div>
+                <div class="w-20"></div> <!-- Spacer for center alignment -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="pt-32 pb-12 px-4 text-center bg-gradient-to-b from-brand-accent/10 to-transparent">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">2025 固搭羽毛球团体赛</h1>
+        <p class="text-gray-400 max-w-2xl mx-auto">单循环积分赛制 · 4支战队 · 巅峰对决</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+
+        <!-- Standings Section -->
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-1 h-8 bg-brand-accent rounded-full"></div>
+                    <h2 class="text-2xl font-bold text-white">最终积分榜</h2>
+                </div>
+                <button onclick="openShareModal()" class="flex items-center gap-2 px-4 py-2 rounded-full bg-brand-accent/10 hover:bg-brand-accent/20 border border-brand-accent/20 text-brand-accent text-sm font-medium transition-all hover:scale-105">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                    </svg>
+                    生成战报海报
+                </button>
+            </div>
+            
+            <div class="glass-panel rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-white/5 text-gray-400 text-sm uppercase tracking-wider">
+                            <tr>
+                                <th class="px-6 py-4 font-semibold text-center w-20">排名</th>
+                                <th class="px-6 py-4 font-semibold">战队</th>
+                                <th class="px-6 py-4 font-semibold text-center">场次</th>
+                                <th class="px-6 py-4 font-semibold text-center">胜 - 负</th>
+                                <th class="px-6 py-4 font-semibold text-center">净胜分</th>
+                                <th class="px-6 py-4 font-semibold text-center text-brand-accent">积分</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5">
+                            <!-- Rank 1: Champion -->
+                            <tr class="table-row-hover transition-colors bg-gradient-to-r from-yellow-500/5 to-transparent">
+                                <td class="px-6 py-4 flex justify-center">
+                                    <div class="rank-badge rank-1">1</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-xs font-bold text-white relative overflow-hidden">
+                                            A
+                                            <div class="absolute inset-0 bg-yellow-400 mix-blend-overlay opacity-50"></div>
+                                        </div>
+                                        <div>
+                                            <span class="font-bold text-white text-lg flex items-center gap-2">
+                                                猛虎队 
+                                                <span class="text-xs px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-500 border border-yellow-500/30">冠军 Champion</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-300 text-center">3</td>
+                                <td class="px-6 py-4 text-white text-center font-medium">3 - 0</td>
+                                <td class="px-6 py-4 text-green-400 text-center">+18</td>
+                                <td class="px-6 py-4 text-brand-accent text-center font-bold text-xl">9</td>
+                            </tr>
+                            <!-- Rank 2: Runner-up -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="px-6 py-4 flex justify-center">
+                                    <div class="rank-badge rank-2">2</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg bg-cyan-600 flex items-center justify-center text-xs font-bold text-white">B</div>
+                                        <div>
+                                            <span class="font-bold text-white flex items-center gap-2">
+                                                雄鹰队
+                                                <span class="text-xs px-2 py-0.5 rounded-full bg-gray-400/20 text-gray-400 border border-gray-400/30">亚军 Runner-up</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-300 text-center">3</td>
+                                <td class="px-6 py-4 text-white text-center font-medium">2 - 1</td>
+                                <td class="px-6 py-4 text-green-400 text-center">+8</td>
+                                <td class="px-6 py-4 text-brand-accent text-center font-bold text-lg">6</td>
+                            </tr>
+                            <!-- Rank 3: Third Place -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="px-6 py-4 flex justify-center">
+                                    <div class="rank-badge rank-3">3</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-xs font-bold text-white">C</div>
+                                        <div>
+                                            <span class="font-bold text-white flex items-center gap-2">
+                                                猎豹队
+                                                <span class="text-xs px-2 py-0.5 rounded-full bg-orange-700/20 text-orange-600 border border-orange-700/30">季军 Third</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-300 text-center">3</td>
+                                <td class="px-6 py-4 text-white text-center font-medium">1 - 2</td>
+                                <td class="px-6 py-4 text-red-400 text-center">-5</td>
+                                <td class="px-6 py-4 text-brand-accent text-center font-bold text-lg">3</td>
+                            </tr>
+                            <!-- Rank 4 -->
+                            <tr class="table-row-hover transition-colors">
+                                <td class="px-6 py-4 flex justify-center">
+                                    <div class="rank-badge rank-4">4</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg bg-rose-600 flex items-center justify-center text-xs font-bold text-white">D</div>
+                                        <span class="font-bold text-gray-400">战狼队</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-300 text-center">3</td>
+                                <td class="px-6 py-4 text-white text-center font-medium">0 - 3</td>
+                                <td class="px-6 py-4 text-red-400 text-center">-21</td>
+                                <td class="px-6 py-4 text-brand-accent text-center font-bold text-lg">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-1 h-8 bg-brand-secondary rounded-full"></div>
+                <h2 class="text-2xl font-bold text-white">详细赛程</h2>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="flex gap-6 mb-6 border-b border-white/10">
+                <button onclick="switchCategory('md')" id="tab-md" class="pb-3 text-brand-secondary border-b-2 border-brand-secondary font-bold transition-colors flex items-center gap-2">
+                    <span>男双</span>
+                    <span class="text-xs bg-white/10 px-1.5 rounded text-gray-400">Men's</span>
+                </button>
+                <button onclick="switchCategory('wd')" id="tab-wd" class="pb-3 text-gray-400 border-b-2 border-transparent hover:text-white transition-colors flex items-center gap-2">
+                    <span>女双</span>
+                    <span class="text-xs bg-white/10 px-1.5 rounded text-gray-400">Women's</span>
+                </button>
+                <button onclick="switchCategory('xd')" id="tab-xd" class="pb-3 text-gray-400 border-b-2 border-transparent hover:text-white transition-colors flex items-center gap-2">
+                    <span>混双</span>
+                    <span class="text-xs bg-white/10 px-1.5 rounded text-gray-400">Mixed</span>
+                </button>
+            </div>
+
+            <div id="schedule-content" class="min-h-[400px]">
+                <!-- Men's Doubles Content -->
+                <div id="md" class="space-y-4">
+                    <div class="glass-panel rounded-2xl overflow-hidden">
+                        <table class="w-full text-sm">
+                            <thead class="bg-white/5 text-gray-400 text-xs uppercase">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">轮次 / 对阵</th>
+                                    <th class="py-3 px-4 text-right w-1/4">选手 A</th>
+                                    <th class="py-3 px-4 text-center w-32">比分</th>
+                                    <th class="py-3 px-4 text-left w-1/4">选手 B</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 text-gray-300">
+                                <!-- Match 1 -->
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="text-xs bg-brand-accent/20 text-brand-accent px-1.5 rounded">R1</span>
+                                            <span class="text-gray-400 text-xs">男双1</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 font-bold text-white">
+                                            <span class="text-blue-400">猛虎队</span> <span class="text-gray-600">vs</span> <span class="text-cyan-400">雄鹰队</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-right font-medium">张三 / 李四</td>
+                                    <td class="py-4 px-4 text-center">
+                                        <div class="flex flex-col items-center gap-1 font-mono text-xs">
+                                            <div class="flex gap-2"><span class="text-brand-accent font-bold">21</span><span class="text-gray-600">-</span><span class="text-gray-500">19</span></div>
+                                            <div class="flex gap-2"><span class="text-gray-500">18</span><span class="text-gray-600">-</span><span class="text-brand-accent font-bold">21</span></div>
+                                            <div class="flex gap-2"><span class="text-brand-accent font-bold">21</span><span class="text-gray-600">-</span><span class="text-gray-500">15</span></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-left font-medium">令狐冲 / 风清扬</td>
+                                </tr>
+                                <!-- Match 2 -->
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="text-xs bg-brand-accent/20 text-brand-accent px-1.5 rounded">R1</span>
+                                            <span class="text-gray-400 text-xs">男双2</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 font-bold text-white">
+                                            <span class="text-blue-400">猛虎队</span> <span class="text-gray-600">vs</span> <span class="text-cyan-400">雄鹰队</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-right font-medium">孙七 / 周八</td>
+                                    <td class="py-4 px-4 text-center">
+                                        <div class="flex flex-col items-center gap-1 font-mono text-xs">
+                                            <div class="flex gap-2"><span class="text-brand-accent font-bold">21</span><span class="text-gray-600">-</span><span class="text-gray-500">15</span></div>
+                                            <div class="flex gap-2"><span class="text-brand-accent font-bold">21</span><span class="text-gray-600">-</span><span class="text-gray-500">12</span></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-left font-medium">向问天 / 计无施</td>
+                                </tr>
+                                <!-- Match 3 -->
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="text-xs bg-brand-accent/20 text-brand-accent px-1.5 rounded">R1</span>
+                                            <span class="text-gray-400 text-xs">男双1</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 font-bold text-white">
+                                            <span class="text-purple-400">猎豹队</span> <span class="text-gray-600">vs</span> <span class="text-rose-400">战狼队</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-right font-medium">杨过 / 耶律齐</td>
+                                    <td class="py-4 px-4 text-center">
+                                        <div class="flex flex-col items-center gap-1 font-mono text-xs">
+                                            <div class="flex gap-2"><span class="text-brand-accent font-bold">21</span><span class="text-gray-600">-</span><span class="text-gray-500">15</span></div>
+                                            <div class="flex gap-2"><span class="text-brand-accent font-bold">21</span><span class="text-gray-600">-</span><span class="text-gray-500">18</span></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-left font-medium">郭靖 / 柯镇恶</td>
+                                </tr>
+                                 <!-- Match 4 -->
+                                 <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="text-xs bg-brand-accent/20 text-brand-accent px-1.5 rounded">R1</span>
+                                            <span class="text-gray-400 text-xs">男双2</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 font-bold text-white">
+                                            <span class="text-purple-400">猎豹队</span> <span class="text-gray-600">vs</span> <span class="text-rose-400">战狼队</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-right font-medium">武敦儒 / 武修文</td>
+                                    <td class="py-4 px-4 text-center">
+                                        <div class="flex flex-col items-center gap-1 font-mono text-xs">
+                                            <div class="flex gap-2"><span class="text-gray-500">18</span><span class="text-gray-600">-</span><span class="text-brand-accent font-bold">21</span></div>
+                                            <div class="flex gap-2"><span class="text-gray-500">19</span><span class="text-gray-600">-</span><span class="text-brand-accent font-bold">21</span></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-left font-medium">南希仁 / 全金发</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Women's Doubles Content (Hidden) -->
+                <div id="wd" class="space-y-4 hidden">
+                    <div class="glass-panel rounded-2xl overflow-hidden">
+                        <table class="w-full text-sm">
+                            <thead class="bg-white/5 text-gray-400 text-xs uppercase">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">轮次 / 对阵</th>
+                                    <th class="py-3 px-4 text-right w-1/4">选手 A</th>
+                                    <th class="py-3 px-4 text-center w-32">比分</th>
+                                    <th class="py-3 px-4 text-left w-1/4">选手 B</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 text-gray-300">
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="text-xs bg-brand-accent/20 text-brand-accent px-1.5 rounded">R1</span>
+                                            <span class="text-gray-400 text-xs">女双1</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 font-bold text-white">
+                                            <span class="text-blue-400">猛虎队</span> <span class="text-gray-600">vs</span> <span class="text-cyan-400">雄鹰队</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-right font-medium">王五(女) / 赵六(女)</td>
+                                    <td class="py-4 px-4 text-center">
+                                        <div class="flex flex-col items-center gap-1 font-mono text-xs">
+                                            <div class="flex gap-2"><span class="text-gray-500">15</span><span class="text-gray-600">-</span><span class="text-brand-accent font-bold">21</span></div>
+                                            <div class="flex gap-2"><span class="text-brand-accent font-bold">21</span><span class="text-gray-600">-</span><span class="text-gray-500">19</span></div>
+                                            <div class="flex gap-2"><span class="text-gray-500">18</span><span class="text-gray-600">-</span><span class="text-brand-accent font-bold">21</span></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-left font-medium">岳灵珊 / 蓝凤凰</td>
+                                </tr>
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="text-xs bg-brand-accent/20 text-brand-accent px-1.5 rounded">R1</span>
+                                            <span class="text-gray-400 text-xs">女双1</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 font-bold text-white">
+                                            <span class="text-purple-400">猎豹队</span> <span class="text-gray-600">vs</span> <span class="text-rose-400">战狼队</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-right font-medium">小龙女 / 郭芙</td>
+                                    <td class="py-4 px-4 text-center">
+                                        <div class="flex flex-col items-center gap-1 font-mono text-xs">
+                                            <div class="flex gap-2"><span class="text-brand-accent font-bold">21</span><span class="text-gray-600">-</span><span class="text-gray-500">10</span></div>
+                                            <div class="flex gap-2"><span class="text-brand-accent font-bold">21</span><span class="text-gray-600">-</span><span class="text-gray-500">12</span></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-left font-medium">黄蓉 / 韩小莹</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                 <!-- Mixed Doubles Content (Hidden) -->
+                 <div id="xd" class="space-y-4 hidden">
+                    <div class="glass-panel rounded-2xl overflow-hidden">
+                        <table class="w-full text-sm">
+                            <thead class="bg-white/5 text-gray-400 text-xs uppercase">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">轮次 / 对阵</th>
+                                    <th class="py-3 px-4 text-right w-1/4">选手 A</th>
+                                    <th class="py-3 px-4 text-center w-32">比分</th>
+                                    <th class="py-3 px-4 text-left w-1/4">选手 B</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 text-gray-300">
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="text-xs bg-brand-accent/20 text-brand-accent px-1.5 rounded">R1</span>
+                                            <span class="text-gray-400 text-xs">混双1</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 font-bold text-white">
+                                            <span class="text-blue-400">猛虎队</span> <span class="text-gray-600">vs</span> <span class="text-cyan-400">雄鹰队</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-right font-medium">张三 / 赵六(女)</td>
+                                    <td class="py-4 px-4 text-center">
+                                        <div class="flex flex-col items-center gap-1 font-mono text-xs">
+                                            <div class="flex gap-2"><span class="text-gray-500">18</span><span class="text-gray-600">-</span><span class="text-brand-accent font-bold">21</span></div>
+                                            <div class="flex gap-2"><span class="text-gray-500">19</span><span class="text-gray-600">-</span><span class="text-brand-accent font-bold">21</span></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-left font-medium">令狐冲 / 岳灵珊</td>
+                                </tr>
+                                <tr class="hover:bg-white/5 transition-colors">
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="text-xs bg-brand-accent/20 text-brand-accent px-1.5 rounded">R1</span>
+                                            <span class="text-gray-400 text-xs">混双1</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 font-bold text-white">
+                                            <span class="text-purple-400">猎豹队</span> <span class="text-gray-600">vs</span> <span class="text-rose-400">战狼队</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-right font-medium">杨过 / 小龙女</td>
+                                    <td class="py-4 px-4 text-center">
+                                        <div class="flex flex-col items-center gap-1 font-mono text-xs">
+                                            <div class="flex gap-2"><span class="text-gray-500">20</span><span class="text-gray-600">-</span><span class="text-brand-accent font-bold">22</span></div>
+                                            <div class="flex gap-2"><span class="text-brand-accent font-bold">21</span><span class="text-gray-600">-</span><span class="text-gray-500">18</span></div>
+                                            <div class="flex gap-2"><span class="text-brand-accent font-bold">21</span><span class="text-gray-600">-</span><span class="text-gray-500">19</span></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-left font-medium">郭靖 / 黄蓉</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rules Section -->
+        <section>
+             <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-1 h-8 bg-gray-500 rounded-full"></div>
+                    <h2 class="text-2xl font-bold text-white">比赛规则</h2>
+                </div>
+                <a href="#" class="text-sm text-gray-600 hover:text-gray-400 transition-colors flex items-center gap-1">
+                    详细规则 <span class="text-xs">→</span>
+                </a>
+            </div>
+            <div class="glass-panel p-8 rounded-2xl text-gray-300 leading-relaxed">
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong class="text-white">赛制：</strong>单循环积分赛制，每支队伍需与其他3支队伍各进行一场比赛。</li>
+                    <li><strong class="text-white">项目：</strong>每场团体赛包含男双、女双、混双三个单项（具体出场顺序由赛前抽签决定）。</li>
+                    <li><strong class="text-white">积分：</strong>胜一场积3分，负一场积0分。若积分相同，则比较净胜场次 > 净胜分数。</li>
+                    <li><strong class="text-white">奖励：</strong>冠军队伍将获得定制金牌及精美礼品一份，所有参赛队员均有纪念品。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Teams Section (New) -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-1 h-8 bg-white rounded-full"></div>
+                <h2 class="text-2xl font-bold text-white">参赛战队</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Team A -->
+                <div class="glass-panel p-6 rounded-2xl team-card-small">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-blue-600 flex items-center justify-center font-bold text-white">A</div>
+                        <div>
+                            <h4 class="font-bold text-white">猛虎队</h4>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400">队长：张三丰</p>
+                    <p class="text-sm text-gray-500 mt-1 leading-relaxed">队员：李四、王五、赵六、孙七、周八、吴九</p>
+                </div>
+                 <!-- Team B -->
+                 <div class="glass-panel p-6 rounded-2xl team-card-small">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-cyan-600 flex items-center justify-center font-bold text-white">B</div>
+                        <div>
+                            <h4 class="font-bold text-white">雄鹰队</h4>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400">队长：风清扬</p>
+                    <p class="text-sm text-gray-500 mt-1 leading-relaxed">队员：令狐冲、岳灵珊、林平之、任盈盈、向问天、蓝凤凰</p>
+                </div>
+                 <!-- Team C -->
+                 <div class="glass-panel p-6 rounded-2xl team-card-small">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-purple-600 flex items-center justify-center font-bold text-white">C</div>
+                        <div>
+                            <h4 class="font-bold text-white">猎豹队</h4>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400">队长：杨过</p>
+                    <p class="text-sm text-gray-500 mt-1 leading-relaxed">队员：小龙女、郭芙、郭襄、耶律齐、陆无双、程英</p>
+                </div>
+                 <!-- Team D -->
+                 <div class="glass-panel p-6 rounded-2xl team-card-small">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded bg-rose-600 flex items-center justify-center font-bold text-white">D</div>
+                        <div>
+                            <h4 class="font-bold text-white">战狼队</h4>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400">队长：郭靖</p>
+                    <p class="text-sm text-gray-500 mt-1 leading-relaxed">队员：黄蓉、柯镇恶、朱聪、韩宝驹、南希仁、全金发</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-20 border-t border-white/10 py-10 text-center">
+        <p class="text-sm text-gray-600">
+            © 2025 GuDa Badminton Club. All rights reserved.<br>
+            <span class="text-gray-500 mt-2 block text-xs">Powered by Jalen</span>
+        </p>
+    </footer>
+
+    <!-- Modal for Poster Generation -->
+    <div id="shareModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 modal-backdrop transition-opacity" onclick="closeShareModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-[#1F2937] border border-white/10 rounded-2xl w-full max-w-md p-6 shadow-2xl relative z-10 transform transition-all scale-100">
+                <button onclick="closeShareModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                
+                <h3 class="text-xl font-bold text-white mb-6">生成战报海报</h3>
+                
+                <!-- Step 1: Select Team -->
+                <div id="stepSelect" class="space-y-4">
+                    <p class="text-gray-400 text-sm mb-4">请选择要生成战报的队伍：</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="generatePoster('A')" class="p-4 bg-gray-800 hover:bg-gray-700 rounded-xl border border-white/5 hover:border-brand-accent/50 transition-all group text-left">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-8 h-8 rounded bg-blue-600 flex items-center justify-center text-xs font-bold text-white">A</div>
+                                <span class="font-bold text-white">猛虎队</span>
+                            </div>
+                            <span class="text-xs text-yellow-500 font-bold">🏆 冠军 Champion</span>
+                        </button>
+                        <button onclick="generatePoster('B')" class="p-4 bg-gray-800 hover:bg-gray-700 rounded-xl border border-white/5 hover:border-brand-secondary/50 transition-all group text-left">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-8 h-8 rounded bg-cyan-600 flex items-center justify-center text-xs font-bold text-white">B</div>
+                                <span class="font-bold text-white">雄鹰队</span>
+                            </div>
+                            <span class="text-xs text-gray-400 font-bold">🥈 亚军 Runner-up</span>
+                        </button>
+                         <button onclick="generatePoster('C')" class="p-4 bg-gray-800 hover:bg-gray-700 rounded-xl border border-white/5 hover:border-purple-500/50 transition-all group text-left">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-8 h-8 rounded bg-purple-600 flex items-center justify-center text-xs font-bold text-white">C</div>
+                                <span class="font-bold text-white">猎豹队</span>
+                            </div>
+                            <span class="text-xs text-orange-600 font-bold">🥉 季军 Third</span>
+                        </button>
+                         <button onclick="generatePoster('D')" class="p-4 bg-gray-800 hover:bg-gray-700 rounded-xl border border-white/5 hover:border-rose-500/50 transition-all group text-left">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-8 h-8 rounded bg-rose-600 flex items-center justify-center text-xs font-bold text-white">D</div>
+                                <span class="font-bold text-white">战狼队</span>
+                            </div>
+                            <span class="text-xs text-gray-500 font-bold">第四名 Fourth</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Preview -->
+                <div id="stepPreview" class="hidden text-center">
+                    <div id="posterContainer" class="mb-4 rounded-lg overflow-hidden shadow-lg mx-auto bg-black relative">
+                        <!-- Poster content injected by JS -->
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">长按图片保存或分享给朋友</p>
+                    <button onclick="resetModal()" class="text-sm text-gray-400 hover:text-white underline">重新选择队伍</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Poster Template (Source) -->
+    <div id="posterTemplate" class="fixed left-[-9999px] top-0 w-[375px] bg-[#0F1115] text-white p-0 overflow-hidden font-sans">
+        <!-- Background -->
+        <div class="absolute inset-0 bg-gradient-to-br from-[#0F1115] to-[#1F2937] z-0"></div>
+        <div class="absolute top-0 right-0 w-64 h-64 bg-brand-accent/20 rounded-full blur-[80px]"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-secondary/10 rounded-full blur-[80px]"></div>
+        
+        <!-- Content -->
+        <div class="relative z-10 flex flex-col h-[667px] p-8">
+            <!-- Header -->
+            <div class="text-center mb-10 mt-4">
+                <h2 class="text-brand-accent tracking-[0.2em] text-xs font-bold uppercase mb-2">GuDa Badminton Club 2025</h2>
+                <h1 class="text-2xl font-bold text-white">固搭羽毛球团体赛</h1>
+                <div class="mt-2 inline-block px-3 py-1 bg-white/10 rounded-full text-xs text-gray-300">最终战报 · Final Report</div>
+            </div>
+
+            <!-- Main Card -->
+            <div class="flex-1 flex flex-col items-center justify-center bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10 relative overflow-hidden mb-8">
+                <!-- Decorative Elements -->
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-accent to-transparent opacity-50"></div>
+                
+                <!-- Rank Icon -->
+                <div id="posterRankBadge" class="mb-6 transform scale-150">
+                    <!-- Injected via JS -->
+                </div>
+
+                <!-- Team Info -->
+                <div class="text-center mb-8">
+                    <div class="flex items-center justify-center gap-3 mb-2">
+                        <div id="posterTeamIcon" class="w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold text-white shadow-lg">A</div>
+                        <h2 id="posterTeamName" class="text-3xl font-bold text-white">猛虎队</h2>
+                    </div>
+                    <p id="posterRankText" class="text-xl font-bold text-yellow-400 tracking-wide uppercase">Champion</p>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-4 w-full text-center border-t border-white/10 pt-6 mb-6">
+                    <div>
+                        <div class="text-xs text-gray-400 mb-1">胜 / 负</div>
+                        <div id="posterWinLoss" class="text-lg font-bold text-white font-mono">3 - 0</div>
+                    </div>
+                     <div>
+                        <div class="text-xs text-gray-400 mb-1">净胜分</div>
+                        <div id="posterDiff" class="text-lg font-bold text-green-400 font-mono">+18</div>
+                    </div>
+                     <div>
+                        <div class="text-xs text-gray-400 mb-1">总积分</div>
+                        <div id="posterPoints" class="text-lg font-bold text-brand-accent font-mono">9</div>
+                    </div>
+                </div>
+
+                <!-- Members -->
+                <div class="w-full text-center">
+                    <p class="text-xs text-gray-500 mb-2">Team Members</p>
+                    <p id="posterMembers" class="text-xs text-gray-300 leading-relaxed px-4">
+                        <!-- Injected -->
+                    </p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex items-center justify-between mt-auto">
+                <div class="text-left">
+                    <p class="text-xs text-gray-500">扫码查看详细赛程</p>
+                    <p class="text-[10px] text-gray-600 mt-1">www.gudaclub.com</p>
+                </div>
+                <div class="w-16 h-16 bg-white p-1 rounded-lg">
+                     <div id="posterQrcode" class="w-full h-full"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for Teams
+        const teamData = {
+            'A': {
+                name: '猛虎队',
+                color: 'bg-blue-600',
+                rankText: '👑 年度总冠军 Champion',
+                rankClass: 'text-yellow-400',
+                badge: '<div class="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-600 flex items-center justify-center text-2xl font-bold text-yellow-900 shadow-xl border-4 border-yellow-200/20">1</div>',
+                winLoss: '3 - 0',
+                diff: '+18',
+                points: '9',
+                diffColor: 'text-green-400',
+                members: '队长：张三丰 | 队员：李四、王五、赵六、孙七、周八、吴九'
+            },
+            'B': {
+                name: '雄鹰队',
+                color: 'bg-cyan-600',
+                rankText: '🥈 年度亚军 Runner-up',
+                rankClass: 'text-gray-300',
+                badge: '<div class="w-16 h-16 rounded-full bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center text-2xl font-bold text-gray-900 shadow-xl border-4 border-gray-200/20">2</div>',
+                winLoss: '2 - 1',
+                diff: '+8',
+                points: '6',
+                diffColor: 'text-green-400',
+                members: '队长：风清扬 | 队员：令狐冲、岳灵珊、林平之、任盈盈、向问天、蓝凤凰'
+            },
+            'C': {
+                name: '猎豹队',
+                color: 'bg-purple-600',
+                rankText: '🥉 年度季军 Third Place',
+                rankClass: 'text-orange-400',
+                badge: '<div class="w-16 h-16 rounded-full bg-gradient-to-br from-orange-300 to-orange-600 flex items-center justify-center text-2xl font-bold text-orange-900 shadow-xl border-4 border-orange-200/20">3</div>',
+                winLoss: '1 - 2',
+                diff: '-5',
+                points: '3',
+                diffColor: 'text-red-400',
+                members: '队长：杨过 | 队员：小龙女、郭芙、郭襄、耶律齐、陆无双、程英'
+            },
+            'D': {
+                name: '战狼队',
+                color: 'bg-rose-600',
+                rankText: '殿军 Fourth Place',
+                rankClass: 'text-gray-500',
+                badge: '<div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center text-2xl font-bold text-gray-400 shadow-xl border-4 border-white/5">4</div>',
+                winLoss: '0 - 3',
+                diff: '-21',
+                points: '0',
+                diffColor: 'text-red-400',
+                members: '队长：郭靖 | 队员：黄蓉、柯镇恶、朱聪、韩宝驹、南希仁、全金发'
+            }
+        };
+
+        // Tab Switching Function (Category Based)
+        function switchCategory(catId) {
+            // Hide all categories
+            document.getElementById('md').classList.add('hidden');
+            document.getElementById('wd').classList.add('hidden');
+            document.getElementById('xd').classList.add('hidden');
+            
+            // Show selected category
+            document.getElementById(catId).classList.remove('hidden');
+            
+            // Update Tab Styles
+            const tabs = ['tab-md', 'tab-wd', 'tab-xd'];
+            tabs.forEach(tab => {
+                const el = document.getElementById(tab);
+                if (tab === 'tab-' + catId) {
+                    el.classList.remove('text-gray-400', 'border-transparent');
+                    el.classList.add('text-brand-secondary', 'border-brand-secondary');
+                    // Update badge style if needed
+                    el.querySelector('span:last-child').classList.remove('text-gray-400');
+                    el.querySelector('span:last-child').classList.add('text-brand-secondary');
+                } else {
+                    el.classList.add('text-gray-400', 'border-transparent');
+                    el.classList.remove('text-brand-secondary', 'border-brand-secondary');
+                     // Update badge style
+                    el.querySelector('span:last-child').classList.add('text-gray-400');
+                    el.querySelector('span:last-child').classList.remove('text-brand-secondary');
+                }
+            });
+        }
+
+        // Initialize First Tab
+        // switchCategory('md'); // No need, HTML default state handles it
+
+        function openShareModal() {
+            document.getElementById('shareModal').classList.remove('hidden');
+            resetModal();
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.add('hidden');
+        }
+
+        function resetModal() {
+            document.getElementById('stepSelect').classList.remove('hidden');
+            document.getElementById('stepPreview').classList.add('hidden');
+            document.getElementById('posterContainer').innerHTML = '';
+        }
+
+        function generatePoster(teamId) {
+            const data = teamData[teamId];
+            if (!data) return;
+
+            // Update Template
+            const tpl = document.getElementById('posterTemplate');
+            document.getElementById('posterTeamName').innerText = data.name;
+            document.getElementById('posterRankText').innerText = data.rankText;
+            document.getElementById('posterRankText').className = `text-xl font-bold tracking-wide uppercase ${data.rankClass}`;
+            document.getElementById('posterRankBadge').innerHTML = data.badge;
+            
+            const icon = document.getElementById('posterTeamIcon');
+            icon.innerText = teamId;
+            // Remove old color classes and add new one
+            icon.className = `w-10 h-10 rounded-lg flex items-center justify-center text-sm font-bold text-white shadow-lg ${data.color}`;
+
+            document.getElementById('posterWinLoss').innerText = data.winLoss;
+            document.getElementById('posterDiff').innerText = data.diff;
+            document.getElementById('posterDiff').className = `text-lg font-bold font-mono ${data.diffColor}`;
+            document.getElementById('posterPoints').innerText = data.points;
+            document.getElementById('posterMembers').innerText = data.members;
+
+            // Generate QR Code if empty
+            const qrContainer = document.getElementById('posterQrcode');
+            qrContainer.innerHTML = '';
+            new QRCode(qrContainer, {
+                text: "https://gudaclub.com/tournament_details.html", // Replace with actual URL
+                width: 64,
+                height: 64,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            // Show Loading State? (Optional)
+            
+            // Generate Canvas
+            html2canvas(tpl, {
+                scale: 2, // High resolution
+                backgroundColor: null,
+                useCORS: true
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const img = document.createElement('img');
+                img.src = imgData;
+                img.className = 'w-full h-auto';
+                
+                // Show Preview
+                document.getElementById('stepSelect').classList.add('hidden');
+                document.getElementById('stepPreview').classList.remove('hidden');
+                document.getElementById('posterContainer').appendChild(img);
+            });
+        }
+    </script>
+</body>
+</html>

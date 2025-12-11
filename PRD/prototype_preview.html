@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>固搭羽毛球俱乐部 - 2025团体赛官网</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0F1115',
+                            light: '#1F2937',
+                            accent: '#3B82F6', // Tech Blue (Blue-500)
+                            'accent-dark': '#1D4ED8', // Blue-700
+                            'accent-glow': '#60A5FA', // Blue-400
+                            secondary: '#06B6D4', // Cyan
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0F1115;
+            color: #ffffff;
+        }
+        .glass-nav {
+            background: rgba(15, 17, 21, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.2), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(6, 182, 212, 0.15), transparent 40%);
+        }
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -15px rgba(59, 130, 246, 0.4);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+        /* Team Card Gradient on Hover */
+        .team-card:hover {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 1) 0%, rgba(15, 23, 42, 1) 100%);
+        }
+        .team-card:hover .team-icon {
+            background-color: #3B82F6;
+            color: white;
+            transform: scale(1.1);
+        }
+        /* Shiny Button Effect */
+        .btn-shiny {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-shiny::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+        .btn-shiny:hover::after {
+            left: 100%;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-brand-accent selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold tracking-tighter text-white">GuDa<span class="text-brand-accent">.</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="text-white hover:text-brand-accent px-3 py-2 rounded-md text-sm font-medium transition-colors">首页</a>
+                        <a href="#tournament" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">2025固搭羽毛球团体赛</a>
+                        <a href="#about" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">关于我们</a>
+                    </div>
+                </div>
+                <div>
+                    <a href="#contact" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">联系我们</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden hero-gradient pt-20">
+        <!-- Abstract Background Elements -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-accent/20 rounded-full blur-3xl filter mix-blend-screen animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-secondary/10 rounded-full blur-3xl filter mix-blend-screen"></div>
+
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <h2 class="text-brand-accent font-semibold tracking-wide uppercase text-sm mb-4">EST. 2025 / GuDa Badminton Club</h2>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-blue-300 mb-6 leading-tight">
+                挥洒汗水<br>
+                <span class="text-white">极致热爱</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-400 mb-10">
+                不仅是运动，更是一种生活方式。<br>加入固搭，与城市中最有趣的灵魂一起，在球场上释放能量。
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#tournament" class="px-8 py-4 bg-brand-accent text-white rounded-full font-bold hover:bg-blue-600 transition-all shadow-lg shadow-blue-500/30 flex items-center gap-2 group">
+                   🔥 2025固搭羽毛球团体赛火热进行中 🏸
+                   <span class="group-hover:translate-x-1 transition-transform">→</span>
+                </a>
+            </div>
+            
+            <!-- Tournament Stats -->
+            <div class="mt-20 grid grid-cols-3 gap-8 border-t border-white/10 pt-10">
+                <div>
+                    <div class="text-3xl font-bold text-white">4 <span class="text-sm font-normal text-gray-400">支</span></div>
+                    <div class="text-sm text-gray-500 mt-1">参赛强队</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-white">3 <span class="text-sm font-normal text-gray-400">项</span></div>
+                    <div class="text-sm text-gray-500 mt-1">激烈赛制</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-white">Gift</div>
+                    <div class="text-sm text-gray-500 mt-1">奖牌 & 礼品</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tournament Teams -->
+    <div id="tournament" class="py-24 bg-brand-dark relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-2">2025 固搭羽毛球团体赛</h2>
+                    <p class="text-gray-400">单循环积分赛制 · 4支战队 · 巅峰对决</p>
+                </div>
+                
+                <!-- Right Side Actions -->
+                <div class="flex items-center gap-4">
+                    <!-- Refined Details Page Entry Button -->
+                    <a href="tournament_details.html" class="btn-shiny flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-brand-accent/20 to-brand-accent/10 hover:from-brand-accent/30 hover:to-brand-accent/20 text-brand-accent hover:text-white rounded-full border border-brand-accent/30 hover:border-brand-accent/60 transition-all font-semibold shadow-[0_0_15px_rgba(59,130,246,0.1)] hover:shadow-[0_0_25px_rgba(59,130,246,0.3)] group">
+                        <span class="relative z-10">进入赛事详情</span>
+                        <svg class="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Team A -->
+                <div class="bg-gray-900/50 rounded-2xl p-8 border border-white/5 card-hover team-card cursor-pointer group">
+                    <div class="flex flex-col items-center mb-6">
+                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-3xl font-bold text-white mb-4 shadow-lg shadow-blue-500/20 team-icon transition-all duration-300">
+                            A
+                        </div>
+                        <h3 class="text-xl font-bold text-white">猛虎队</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm py-2 border-b border-white/5">
+                            <span class="text-gray-400">队长</span>
+                            <span class="text-white font-medium">张三丰</span>
+                        </div>
+                        <div class="text-sm text-gray-400 leading-relaxed text-center pt-2">
+                            李四 · 王五<br>
+                            赵六 · 孙七<br>
+                            周八 · 吴九
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team B -->
+                <div class="bg-gray-900/50 rounded-2xl p-8 border border-white/5 card-hover team-card cursor-pointer group">
+                    <div class="flex flex-col items-center mb-6">
+                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-cyan-500 to-cyan-700 flex items-center justify-center text-3xl font-bold text-white mb-4 shadow-lg shadow-cyan-500/20 team-icon transition-all duration-300">
+                            B
+                        </div>
+                        <h3 class="text-xl font-bold text-white">雄鹰队</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm py-2 border-b border-white/5">
+                            <span class="text-gray-400">队长</span>
+                            <span class="text-white font-medium">风清扬</span>
+                        </div>
+                        <div class="text-sm text-gray-400 leading-relaxed text-center pt-2">
+                            令狐冲 · 岳灵珊<br>
+                            林平之 · 任盈盈<br>
+                            向问天 · 蓝凤凰
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team C -->
+                <div class="bg-gray-900/50 rounded-2xl p-8 border border-white/5 card-hover team-card cursor-pointer group">
+                    <div class="flex flex-col items-center mb-6">
+                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center text-3xl font-bold text-white mb-4 shadow-lg shadow-purple-500/20 team-icon transition-all duration-300">
+                            C
+                        </div>
+                        <h3 class="text-xl font-bold text-white">猎豹队</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm py-2 border-b border-white/5">
+                            <span class="text-gray-400">队长</span>
+                            <span class="text-white font-medium">杨过</span>
+                        </div>
+                        <div class="text-sm text-gray-400 leading-relaxed text-center pt-2">
+                            小龙女 · 郭芙<br>
+                            郭襄 · 耶律齐<br>
+                            陆无双 · 程英
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team D -->
+                <div class="bg-gray-900/50 rounded-2xl p-8 border border-white/5 card-hover team-card cursor-pointer group">
+                    <div class="flex flex-col items-center mb-6">
+                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center text-3xl font-bold text-white mb-4 shadow-lg shadow-rose-500/20 team-icon transition-all duration-300">
+                            D
+                        </div>
+                        <h3 class="text-xl font-bold text-white">战狼队</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm py-2 border-b border-white/5">
+                            <span class="text-gray-400">队长</span>
+                            <span class="text-white font-medium">郭靖</span>
+                        </div>
+                        <div class="text-sm text-gray-400 leading-relaxed text-center pt-2">
+                            黄蓉 · 柯镇恶<br>
+                            朱聪 · 韩宝驹<br>
+                            南希仁 · 全金发
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA / Footer -->
+    <footer id="contact" class="bg-black border-t border-white/10 py-20">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-white mb-6">加入观赛社群</h2>
+            <p class="text-gray-400 mb-8">扫码加入"固搭2025团体赛"官方微信群，获取实时比分与战报。</p>
+            <div class="inline-block p-4 bg-white rounded-lg mb-8">
+                <!-- QR Code Placeholder -->
+                <div class="w-32 h-32 bg-gray-200 flex items-center justify-center text-gray-500 text-xs text-center p-2">
+                    [赛事交流群<br>二维码]
+                </div>
+            </div>
+            <p class="text-sm text-gray-600">
+                © 2025 GuDa Badminton Club. All rights reserved.<br>
+                <span class="text-gray-500 mt-2 block text-xs">Powered by Jalen</span>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
