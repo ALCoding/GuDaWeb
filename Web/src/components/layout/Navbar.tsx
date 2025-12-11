@@ -10,10 +10,10 @@ export default function Navbar() {
   return (
     <nav className="fixed w-full z-50 glass-nav border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold tracking-tighter text-white">
+            <span className="text-xl sm:text-2xl font-bold tracking-tighter text-white">
               GuDa<span className="text-brand-accent">.</span>
             </span>
           </Link>
