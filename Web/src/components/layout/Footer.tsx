@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
 
 export default function Footer() {
@@ -19,12 +18,11 @@ export default function Footer() {
         </p>
         <div className="inline-block p-3 sm:p-4 bg-white rounded-xl mb-6 sm:mb-8 shadow-lg">
           {!imageError ? (
-            <Image
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
               src="/images/contact_qrcode.png"
               alt="联系我们二维码"
-              width={160}
-              height={160}
-              className="w-32 h-32 sm:w-40 sm:h-40"
+              className="w-32 h-32 sm:w-40 sm:h-40 object-contain"
               onError={() => setImageError(true)}
             />
           ) : (
