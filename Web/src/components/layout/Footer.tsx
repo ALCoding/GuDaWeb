@@ -20,7 +20,7 @@ export default function Footer() {
           {!imageError ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src="/images/contact_qrcode.png"
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/images/contact_qrcode.png`}
               alt="联系我们二维码"
               className="w-32 h-32 sm:w-40 sm:h-40 object-contain"
               onError={() => setImageError(true)}
