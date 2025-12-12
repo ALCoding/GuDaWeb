@@ -20,9 +20,12 @@ export default function TournamentSection() {
           {/* Refined Details Page Entry Button */}
           <Link
             href="/tournament"
-            className="btn-shiny flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-brand-accent/20 to-brand-accent/10 hover:from-brand-accent/30 hover:to-brand-accent/20 text-brand-accent hover:text-white rounded-full border border-brand-accent/30 hover:border-brand-accent/60 transition-all font-semibold shadow-[0_0_15px_rgba(59,130,246,0.1)] hover:shadow-[0_0_25px_rgba(59,130,246,0.3)] group text-sm sm:text-base whitespace-nowrap"
+            className="btn-shiny relative flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-br from-brand-accent via-brand-accent-glow to-brand-accent text-white rounded-full transition-all font-bold shadow-lg shadow-brand-accent/30 hover:shadow-xl hover:shadow-brand-accent/50 group text-sm sm:text-base whitespace-nowrap overflow-hidden"
           >
-            <span className="relative z-10">进入赛事详情</span>
+            {/* 光晕效果 */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer"></div>
+            
+            <span className="relative z-10">🏆 赛事详情</span>
             <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
