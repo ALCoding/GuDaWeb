@@ -104,7 +104,7 @@ export default function StandingsTable({ onGeneratePoster }: StandingsTableProps
                 <div className="text-xs sm:text-sm text-gray-500">参赛队伍</div>
               </div>
               <div className="p-4 sm:p-6 text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-white mb-1">36</div>
+                <div className="text-2xl sm:text-3xl font-bold text-white mb-1">18</div>
                 <div className="text-xs sm:text-sm text-gray-500">总场次</div>
               </div>
               <div className="p-4 sm:p-6 text-center">
