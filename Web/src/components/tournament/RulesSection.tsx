@@ -23,7 +23,7 @@ export default function RulesSection() {
             {rules.map((rule, index) => (
               <li key={index}>
                 <strong className="text-white">{rule.title}：</strong>
-                {rule.content}
+                <span className="whitespace-pre-line">{rule.content}</span>
               </li>
             ))}
           </ul>

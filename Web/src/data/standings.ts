@@ -1,44 +1,50 @@
 import { StandingEntry } from '@/types';
 
+// 比赛状态：'upcoming' | 'ongoing' | 'finished'
+export const tournamentStatus: 'upcoming' | 'ongoing' | 'finished' = 'upcoming';
+
+// 比赛开始日期
+export const tournamentStartDate = '2025-12-28';
+
 export const standings: StandingEntry[] = [
   {
     rank: 1,
-    rankType: 'champion',
+    rankType: 'fourth', // 比赛未开始，暂无排名
     team: 'A',
-    played: 3,
-    won: 3,
+    played: 0,
+    won: 0,
     lost: 0,
-    pointsDiff: 18,
-    points: 9,
+    pointsDiff: 0,
+    points: 0,
   },
   {
     rank: 2,
-    rankType: 'runner-up',
+    rankType: 'fourth',
     team: 'B',
-    played: 3,
-    won: 2,
-    lost: 1,
-    pointsDiff: 8,
-    points: 6,
+    played: 0,
+    won: 0,
+    lost: 0,
+    pointsDiff: 0,
+    points: 0,
   },
   {
     rank: 3,
-    rankType: 'third',
+    rankType: 'fourth',
     team: 'C',
-    played: 3,
-    won: 1,
-    lost: 2,
-    pointsDiff: -5,
-    points: 3,
+    played: 0,
+    won: 0,
+    lost: 0,
+    pointsDiff: 0,
+    points: 0,
   },
   {
     rank: 4,
     rankType: 'fourth',
     team: 'D',
-    played: 3,
+    played: 0,
     won: 0,
-    lost: 3,
-    pointsDiff: -21,
+    lost: 0,
+    pointsDiff: 0,
     points: 0,
   },
 ];
