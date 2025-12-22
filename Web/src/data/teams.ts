@@ -3,10 +3,10 @@ import { Team, TeamId } from '@/types';
 export const teams: Record<TeamId, Team> = {
   A: {
     id: 'A',
-    name: '猛虎队',
+    name: '他还爱我对不队',
     logo: 'A', // 暂用字母，后续可替换为实际图片路径
-    captain: '张三丰',
-    members: ['李四', '王五', '赵六', '孙七', '周八', '吴九'],
+    captain: '黄舒婵',
+    members: ['黄舒婵', '苏苏', '莉婷', 'Season', '颖祺', 'Healer'],
     theme: {
       primary: 'blue-600',
       gradient: 'from-blue-500 to-blue-700',
@@ -16,10 +16,10 @@ export const teams: Record<TeamId, Team> = {
   },
   B: {
     id: 'B',
-    name: '雄鹰队',
+    name: '虫队',
     logo: 'B',
-    captain: '风清扬',
-    members: ['令狐冲', '岳灵珊', '林平之', '任盈盈', '向问天', '蓝凤凰'],
+    captain: '虫虫',
+    members: ['虫虫', '🍊姐', '夏天吃黄瓜', '林子强', '金周', '肯尼斯（子）'],
     theme: {
       primary: 'cyan-600',
       gradient: 'from-cyan-500 to-cyan-700',
@@ -29,10 +29,10 @@ export const teams: Record<TeamId, Team> = {
   },
   C: {
     id: 'C',
-    name: '猎豹队',
+    name: '摸鱼传奇队',
     logo: 'C',
-    captain: '杨过',
-    members: ['小龙女', '郭芙', '郭襄', '耶律齐', '陆无双', '程英'],
+    captain: '🍊哥',
+    members: ['千喜', '阿呆', '咩啊', '🍊哥', 'Jalen', '库幸'],
     theme: {
       primary: 'purple-600',
       gradient: 'from-purple-500 to-purple-700',
@@ -42,10 +42,10 @@ export const teams: Record<TeamId, Team> = {
   },
   D: {
     id: 'D',
-    name: '战狼队',
+    name: '偷后场不队',
     logo: 'D',
-    captain: '郭靖',
-    members: ['黄蓉', '柯镇恶', '朱聪', '韩宝驹', '南希仁', '全金发'],
+    captain: 'wuli沈大大',
+    members: ['木子', '小周', '恣懿', 'wuli沈大大', '来财', '肯尼斯（父）'],
     theme: {
       primary: 'rose-600',
       gradient: 'from-rose-500 to-rose-700',
