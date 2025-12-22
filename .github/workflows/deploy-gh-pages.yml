@@ -52,6 +52,7 @@ jobs:
         working-directory: ./Web
         env:
           GITHUB_PAGES: 'true'
+          CUSTOM_DOMAIN: 'true'
         run: pnpm build
 
       - name: Setup Pages
