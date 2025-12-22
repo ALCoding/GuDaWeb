@@ -5,23 +5,31 @@ export interface Organizer {
 
 export const organizers: Organizer[] = [
   {
-    name: '张三',
-    role: '赛事总监',
+    name: 'wuli沈大大',
+    role: '赛事主理人',
   },
   {
-    name: '李四',
-    role: '技术裁判长',
+    name: 'Roche',
+    role: '裁判长',
   },
   {
-    name: '王五',
-    role: '后勤保障',
+    name: '大灰',
+    role: '裁判/打杂跑腿',
   },
   {
-    name: '赵六',
-    role: '宣传统筹',
+    name: '蓉蓉',
+    role: '摄影',
   },
   {
-    name: '钱七',
-    role: '场地协调',
+    name: '黄舒婵',
+    role: '人员统筹',
+  },
+  {
+    name: '小钧',
+    role: '裁判/传奇崴脚王',
+  },
+  {
+    name: 'Jalen',
+    role: '打杂',
   },
 ];
