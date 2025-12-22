@@ -19,7 +19,7 @@ export const teams: Record<TeamId, Team> = {
     name: '虫队',
     logo: 'B',
     captain: '虫虫',
-    members: ['虫虫', '🍊姐', '夏天吃黄瓜', '林子强', '金周', '肯尼斯（子）'],
+    members: ['夏天吃黄瓜', '🍊姐', '虫虫', '金周', '林子强', '肯尼斯（子）'],
     theme: {
       primary: 'cyan-600',
       gradient: 'from-cyan-500 to-cyan-700',
@@ -32,7 +32,7 @@ export const teams: Record<TeamId, Team> = {
     name: '摸鱼传奇队',
     logo: 'C',
     captain: '🍊哥',
-    members: ['千喜', '阿呆', '咩啊', '🍊哥', 'Jalen', '库幸'],
+    members: ['千喜', '咩啊', '阿呆', 'Jalen', '🍊哥', '库幸'],
     theme: {
       primary: 'purple-600',
       gradient: 'from-purple-500 to-purple-700',
