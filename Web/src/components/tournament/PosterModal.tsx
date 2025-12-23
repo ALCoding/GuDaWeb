@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { TeamId } from '@/types';
 import { getTeam } from '@/data/teams';
-import { getStandingByTeam } from '@/data/standings';
+import { getStandingByTeam, tournamentStatus } from '@/data/standings';
+import { calculateStandingsFromJSON } from '@/utils/calculateStandings';
 import { QRCodeSVG } from 'qrcode.react';
 import html2canvas from 'html2canvas';
 
@@ -13,13 +14,65 @@ interface PosterModalProps {
   onClose: () => void;
 }
 
+interface CalculatedStanding {
+  team: string;
+  played: number;
+  won: number;
+  lost: number;
+  pointsDiff: number;
+  points: number;
+}
+
 export default function PosterModal({ isOpen, onClose }: PosterModalProps) {
   const [selectedTeam, setSelectedTeam] = useState<TeamId | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [posterImage, setPosterImage] = useState<string | null>(null);
+  const [calculatedStandings, setCalculatedStandings] = useState<CalculatedStanding[]>([]);
   const posterRef = useRef<HTMLDivElement>(null);
 
   const teams: TeamId[] = ['A', 'B', 'C', 'D'];
+
+  // 加载计算出的积分榜（finished 状态需要）
+  useEffect(() => {
+    if (isOpen && tournamentStatus === 'finished') {
+      calculateStandingsFromJSON().then(setCalculatedStandings);
+    }
+  }, [isOpen, tournamentStatus]);
+
+  // 获取队伍的积分榜数据（优先使用计算出的数据）
+  const getStandingData = (teamId: TeamId) => {
+    if (tournamentStatus === 'finished' && calculatedStandings.length > 0) {
+      const calculated = calculatedStandings.find((s) => s.team === teamId);
+      if (calculated) {
+        // 找到排名
+        const rank = calculatedStandings
+          .map((s, index) => ({ team: s.team, rank: index + 1 }))
+          .find((s) => s.team === teamId)?.rank || 4;
+        
+        return {
+          rank,
+          played: calculated.played,
+          won: calculated.won,
+          lost: calculated.lost,
+          pointsDiff: calculated.pointsDiff,
+          points: calculated.points,
+        };
+      }
+    }
+    // 回退到静态数据
+    const staticStanding = getStandingByTeam(teamId);
+    if (staticStanding) {
+      return {
+        rank: staticStanding.rank,
+        played: staticStanding.played,
+        won: staticStanding.won,
+        lost: staticStanding.lost,
+        pointsDiff: staticStanding.pointsDiff,
+        points: staticStanding.points,
+      };
+    }
+    return null;
+  };
 
   const generatePoster = async (teamId: TeamId) => {
     setSelectedTeam(teamId);
@@ -102,7 +155,7 @@ export default function PosterModal({ isOpen, onClose }: PosterModalProps) {
               <div className="grid grid-cols-2 gap-4">
                 {teams.map((teamId) => {
                   const team = getTeam(teamId);
-                  const standing = getStandingByTeam(teamId);
+                  const standing = getStandingData(teamId);
                   if (!standing) return null;
 
                   return (
@@ -175,7 +228,51 @@ export default function PosterModal({ isOpen, onClose }: PosterModalProps) {
 
 function PosterContent({ teamId }: { teamId: TeamId }) {
   const team = getTeam(teamId);
-  const standing = getStandingByTeam(teamId);
+  
+  // 获取积分榜数据（需要在组件内部重新获取，因为这是独立的组件）
+  const [standing, setStanding] = useState<{
+    rank: number;
+    played: number;
+    won: number;
+    lost: number;
+    pointsDiff: number;
+    points: number;
+  } | null>(null);
+
+  useEffect(() => {
+    const loadStanding = async () => {
+      if (tournamentStatus === 'finished') {
+        const calculated = await calculateStandingsFromJSON();
+        const calculatedStanding = calculated.find((s) => s.team === teamId);
+        if (calculatedStanding) {
+          const rank = calculated
+            .map((s, index) => ({ team: s.team, rank: index + 1 }))
+            .find((s) => s.team === teamId)?.rank || 4;
+          setStanding({
+            rank,
+            played: calculatedStanding.played,
+            won: calculatedStanding.won,
+            lost: calculatedStanding.lost,
+            pointsDiff: calculatedStanding.pointsDiff,
+            points: calculatedStanding.points,
+          });
+        }
+      } else {
+        const staticStanding = getStandingByTeam(teamId);
+        if (staticStanding) {
+          setStanding({
+            rank: staticStanding.rank,
+            played: staticStanding.played,
+            won: staticStanding.won,
+            lost: staticStanding.lost,
+            pointsDiff: staticStanding.pointsDiff,
+            points: staticStanding.points,
+          });
+        }
+      }
+    };
+    loadStanding();
+  }, [teamId]);
 
   if (!standing) return null;
 

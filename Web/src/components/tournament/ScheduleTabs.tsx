@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { MatchCategory, MatchCategoryLabel } from '@/types';
-import { getMatchesByCategory } from '@/data/matches';
+import { useState, useEffect } from 'react';
+import { MatchCategory, MatchCategoryLabel, Match } from '@/types';
+import { getMatchesByCategory, matches as baseMatches } from '@/data/matches';
 import MatchRow from './MatchRow';
 
 const categoryLabels: Record<MatchCategory, string> = {
@@ -13,9 +13,79 @@ const categoryLabels: Record<MatchCategory, string> = {
 
 export default function ScheduleTabs() {
   const [activeCategory, setActiveCategory] = useState<MatchCategory>('MD');
+  const [matchesWithScores, setMatchesWithScores] = useState<Match[]>([]);
 
   const categories: MatchCategory[] = ['MD', 'WD', 'XD'];
-  const matches = getMatchesByCategory(activeCategory);
+
+  // 从 JSON 加载比分数据并合并
+  useEffect(() => {
+    const loadScores = async () => {
+      try {
+        const response = await fetch('/data/scores.json?t=' + Date.now());
+        if (response.ok) {
+          const scoreData: { matches: Array<{ id: string; info?: string; games: number[][] }> } = await response.json();
+          
+          // 合并比分数据到 matches
+          const merged = baseMatches.map((match) => {
+            const scoreMatch = scoreData.matches.find((m) => m.id === match.id);
+            if (!scoreMatch || scoreMatch.games.length === 0) {
+              return match;
+            }
+            
+            // 转换比分格式，过滤掉平局情况
+            const games = scoreMatch.games
+              .map(([scoreA, scoreB], index) => {
+                // 确定获胜方（如果平局，跳过该局）
+                let winner: 'A' | 'B' | null = null;
+                if (scoreA > scoreB) {
+                  winner = 'A';
+                } else if (scoreB > scoreA) {
+                  winner = 'B';
+                } else {
+                  // 平局情况（不应该发生，但需要处理）
+                  return null;
+                }
+                return {
+                  gameNumber: index + 1,
+                  scoreA,
+                  scoreB,
+                  winner,
+                };
+              })
+              .filter((game): game is { gameNumber: number; scoreA: number; scoreB: number; winner: 'A' | 'B' } => game !== null);
+            
+            const winsA = games.filter((g) => g.winner === 'A').length;
+            const winsB = games.filter((g) => g.winner === 'B').length;
+            
+            return {
+              ...match,
+              games,
+              totalGamesPlayed: games.length,
+              winner: winsA > winsB ? match.teamA : winsB > winsA ? match.teamB : null,
+              status: match.status, // 保持原有状态，实际判断使用 games.length
+            };
+          });
+          
+          setMatchesWithScores(merged);
+        } else {
+          setMatchesWithScores(baseMatches);
+        }
+      } catch (error) {
+        console.error('Failed to load scores:', error);
+        setMatchesWithScores(baseMatches);
+      }
+    };
+    
+    loadScores();
+    
+    // 定期刷新（每30秒）
+    const interval = setInterval(loadScores, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const matches = matchesWithScores.length > 0 
+    ? matchesWithScores.filter((m) => m.category === activeCategory)
+    : getMatchesByCategory(activeCategory);
 
   return (
     <section>
