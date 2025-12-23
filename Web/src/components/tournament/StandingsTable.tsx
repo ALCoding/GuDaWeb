@@ -25,6 +25,17 @@ export default function StandingsTable({ onGeneratePoster }: StandingsTableProps
   const [calculatedStandings, setCalculatedStandings] = useState<CalculatedStanding[]>([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 检测是否为移动设备
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // 加载并计算积分榜（ongoing 和 finished 状态都需要）
   useEffect(() => {
@@ -198,10 +209,10 @@ export default function StandingsTable({ onGeneratePoster }: StandingsTableProps
               className="w-full max-w-7xl relative landscape:max-h-[95vh] portrait:max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* 关闭按钮 */}
+              {/* 关闭按钮 - 确保在移动端横屏时也可见 */}
               <button
                 onClick={() => setIsFullscreen(false)}
-                className="fixed top-4 right-4 sm:absolute sm:-top-10 sm:right-4 text-white hover:text-brand-accent transition-colors p-2 z-10 bg-brand-dark/80 rounded-full backdrop-blur-sm"
+                className="fixed top-4 right-4 z-[9999] text-white hover:text-brand-accent active:text-brand-accent transition-colors p-3 bg-brand-dark/95 backdrop-blur-md rounded-full shadow-xl border border-white/20 min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="关闭全屏"
               >
                 <X className="w-6 h-6" />
@@ -211,7 +222,9 @@ export default function StandingsTable({ onGeneratePoster }: StandingsTableProps
               <div className="bg-brand-dark">
                 <div className="mb-4 sm:mb-6 text-center landscape:mb-3">
                   <h2 className="text-2xl sm:text-3xl md:text-4xl landscape:text-3xl font-bold text-white mb-2 landscape:mb-1">实时积分榜</h2>
-                  <p className="text-gray-400 text-sm sm:text-base landscape:text-xs">横屏查看效果更佳 · 按 ESC 退出</p>
+                  <p className="text-gray-400 text-sm sm:text-base landscape:text-xs">
+                    {isMobile ? '横屏查看效果更佳' : '横屏查看效果更佳 · 按 ESC 退出'}
+                  </p>
                 </div>
                 {renderStandingsTable(true)}
               </div>
