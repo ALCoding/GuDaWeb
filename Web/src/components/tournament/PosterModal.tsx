@@ -15,7 +15,7 @@ interface PosterModalProps {
 }
 
 interface CalculatedStanding {
-  team: string;
+  team: TeamId;
   played: number;
   won: number;
   lost: number;
@@ -37,7 +37,8 @@ export default function PosterModal({ isOpen, onClose }: PosterModalProps) {
     if (isOpen && tournamentStatus === 'finished') {
       calculateStandingsFromJSON().then(setCalculatedStandings);
     }
-  }, [isOpen, tournamentStatus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]); // tournamentStatus 是常量导入，不需要作为依赖
 
   // 获取队伍的积分榜数据（优先使用计算出的数据）
   const getStandingData = (teamId: TeamId) => {

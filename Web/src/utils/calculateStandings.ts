@@ -1,4 +1,4 @@
-import { Match } from '@/types';
+import { Match, TeamId } from '@/types';
 import { matches } from '@/data/matches';
 
 interface ScoreData {
@@ -10,7 +10,7 @@ interface ScoreData {
 }
 
 interface CalculatedStanding {
-  team: string;
+  team: TeamId;
   played: number;
   won: number;
   lost: number;
@@ -83,7 +83,7 @@ export async function calculateStandingsFromJSON(): Promise<CalculatedStanding[]
  * 从 matches 数据计算积分榜
  */
 function calculateStandingsFromMatches(matchesData: Match[]): CalculatedStanding[] {
-  const teamStats: Record<string, CalculatedStanding> = {
+  const teamStats: Record<TeamId, CalculatedStanding> = {
     A: { team: 'A', played: 0, won: 0, lost: 0, pointsDiff: 0, points: 0 },
     B: { team: 'B', played: 0, won: 0, lost: 0, pointsDiff: 0, points: 0 },
     C: { team: 'C', played: 0, won: 0, lost: 0, pointsDiff: 0, points: 0 },
@@ -143,7 +143,7 @@ function calculateStandingsFromMatches(matchesData: Match[]): CalculatedStanding
   });
   
   // 计算每支队伍在积分相同组内的净胜场数（只考虑组内比赛）
-  const netWinsInGroup: Record<string, number> = {};
+  const netWinsInGroup: Partial<Record<TeamId, number>> = {};
   
   pointsGroups.forEach((group, points) => {
     if (group.length >= 2) {

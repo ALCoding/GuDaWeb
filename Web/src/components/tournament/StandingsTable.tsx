@@ -6,13 +6,14 @@ import { getTeam, getAllTeams } from '@/data/teams';
 import RankBadge from '@/components/ui/RankBadge';
 import { Share2, Trophy, Clock, Zap, Maximize2, X } from 'lucide-react';
 import { calculateStandingsFromJSON } from '@/utils/calculateStandings';
+import { TeamId } from '@/types';
 
 interface StandingsTableProps {
   onGeneratePoster: () => void;
 }
 
 interface CalculatedStanding {
-  team: string;
+  team: TeamId;
   played: number;
   won: number;
   lost: number;
@@ -38,7 +39,8 @@ export default function StandingsTable({ onGeneratePoster }: StandingsTableProps
           setIsLoading(false);
         });
     }
-  }, [tournamentStatus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // tournamentStatus 是常量导入，不需要作为依赖
 
   // 定期刷新（每30秒）
   useEffect(() => {
@@ -48,7 +50,8 @@ export default function StandingsTable({ onGeneratePoster }: StandingsTableProps
       }, 30000);
       return () => clearInterval(interval);
     }
-  }, [tournamentStatus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // tournamentStatus 是常量导入，不需要作为依赖
 
   // ESC 键关闭全屏
   useEffect(() => {
