@@ -6,7 +6,7 @@ export default function TeamsGrid() {
   return (
     <section>
       <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-        <div className="w-1 h-6 sm:h-8 bg-white rounded-full"></div>
+        <div className="w-1 h-6 sm:h-8 bg-brand-secondary rounded-full"></div>
         <h2 className="text-xl sm:text-2xl font-bold text-white">参赛战队</h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -27,7 +27,7 @@ export default function TeamsGrid() {
             </div>
             <p className="text-xs sm:text-sm text-gray-400">队长：{team.captain}</p>
             <p className="text-xs sm:text-sm text-gray-500 mt-1 leading-relaxed">
-              队员：{team.members.join('、')}
+              参赛队员：{team.members.join('、')}
             </p>
           </div>
         ))}

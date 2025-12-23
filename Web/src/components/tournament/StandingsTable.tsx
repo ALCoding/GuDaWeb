@@ -37,7 +37,7 @@ export default function StandingsTable({ onGeneratePoster }: StandingsTableProps
       <section>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-1 h-6 sm:h-8 bg-brand-accent rounded-full"></div>
+            <div className="w-1 h-6 sm:h-8 bg-brand-secondary rounded-full"></div>
             <h2 className="text-xl sm:text-2xl font-bold text-white">赛事积分榜</h2>
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-secondary/10 border border-brand-secondary/20">
@@ -129,7 +129,7 @@ export default function StandingsTable({ onGeneratePoster }: StandingsTableProps
     <section>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="w-1 h-6 sm:h-8 bg-brand-accent rounded-full"></div>
+          <div className="w-1 h-6 sm:h-8 bg-brand-secondary rounded-full"></div>
           <h2 className="text-xl sm:text-2xl font-bold text-white">最终积分榜</h2>
         </div>
         <button
