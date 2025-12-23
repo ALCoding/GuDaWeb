@@ -111,9 +111,9 @@ export default function StandingsTable({ onGeneratePoster }: StandingsTableProps
                 <div className="text-2xl sm:text-3xl font-bold text-white mb-1">3</div>
                 <div className="text-xs sm:text-sm text-gray-500">比赛项目</div>
               </div>
-              <div className="p-4 sm:p-6 text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-brand-accent mb-1">
-                  <Trophy className="w-6 h-6 sm:w-8 sm:h-8 mx-auto" />
+              <div className="p-4 sm:p-6 text-center flex flex-col justify-center">
+                <div className="text-2xl sm:text-3xl font-bold text-brand-accent mb-1 flex items-center justify-center h-[1.875rem] sm:h-[2.25rem]">
+                  <Trophy className="w-6 h-6 sm:w-8 sm:h-8" />
                 </div>
                 <div className="text-xs sm:text-sm text-gray-500">待揭晓</div>
               </div>
