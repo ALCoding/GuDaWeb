@@ -3,7 +3,7 @@ import { Team, TeamId } from '@/types';
 export const teams: Record<TeamId, Team> = {
   A: {
     id: 'A',
-    name: '他还爱我对不队',
+    name: '她还爱我对不队',
     logo: 'A', // 暂用字母，后续可替换为实际图片路径
     captain: '黄舒婵',
     members: ['黄舒婵', '苏苏', '莉婷', 'Season', '颖祺', 'Healer'],
