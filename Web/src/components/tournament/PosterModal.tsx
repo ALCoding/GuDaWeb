@@ -75,28 +75,41 @@ export default function PosterModal({ isOpen, onClose }: PosterModalProps) {
     return null;
   };
 
+  // 获取海报图片路径
+  const getPosterImagePath = (teamId: TeamId, rank: number): string => {
+    const rankMap: Record<number, string> = {
+      1: '1st',
+      2: '2nd',
+      3: '3rd',
+      4: '4th',
+    };
+    const rankSuffix = rankMap[rank] || '4th';
+    const teamIdLower = teamId.toLowerCase();
+    return `/images/posters/poster_${rankSuffix}/poster_${rankSuffix}_${teamIdLower}.png`;
+  };
+
   const generatePoster = async (teamId: TeamId) => {
     setSelectedTeam(teamId);
     setIsGenerating(true);
 
-    // 等待 DOM 更新
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
-    if (posterRef.current) {
-      try {
-        const canvas = await html2canvas(posterRef.current, {
-          scale: 2,
-          backgroundColor: '#0F1115',
-          useCORS: true,
-        });
-        const imgData = canvas.toDataURL('image/png');
-        setPosterImage(imgData);
-      } catch (error) {
-        console.error('生成海报失败:', error);
-      }
+    // 获取队伍的排名
+    const standing = getStandingData(teamId);
+    if (standing) {
+      const posterPath = getPosterImagePath(teamId, standing.rank);
+      // 预加载图片确保可用
+      const img = new Image();
+      img.onload = () => {
+        setPosterImage(posterPath);
+        setIsGenerating(false);
+      };
+      img.onerror = () => {
+        console.error('加载海报失败:', posterPath);
+        setIsGenerating(false);
+      };
+      img.src = posterPath;
+    } else {
+      setIsGenerating(false);
     }
-
-    setIsGenerating(false);
   };
 
   const resetModal = () => {
@@ -138,8 +151,8 @@ export default function PosterModal({ isOpen, onClose }: PosterModalProps) {
         className="absolute inset-0 modal-backdrop transition-opacity"
         onClick={handleClose}
       ></div>
-      <div className="absolute inset-0 flex items-center justify-center p-4">
-        <div className="bg-[#1F2937] border border-white/10 rounded-2xl w-full max-w-md p-6 shadow-2xl relative z-10 transform transition-all scale-100">
+      <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div className="bg-[#1F2937] border border-white/10 rounded-xl sm:rounded-2xl w-full max-w-md p-4 sm:p-6 shadow-2xl relative z-10 transform transition-all scale-100 my-auto">
           <button
             onClick={handleClose}
             className="absolute top-4 right-4 text-gray-400 hover:text-white"
@@ -147,7 +160,7 @@ export default function PosterModal({ isOpen, onClose }: PosterModalProps) {
             <X className="w-6 h-6" />
           </button>
 
-          <h3 className="text-xl font-bold text-white mb-6">生成战报海报</h3>
+          <h3 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6">生成战报海报</h3>
 
           {/* Step 1: Select Team */}
           {!posterImage && (
@@ -196,15 +209,35 @@ export default function PosterModal({ isOpen, onClose }: PosterModalProps) {
 
           {/* Step 2: Preview */}
           {posterImage && (
-            <div className="text-center">
-              <div className="mb-4 rounded-lg overflow-hidden shadow-lg mx-auto bg-black">
+            <div className="text-center w-full">
+              {/* 海报容器 - 保持1672:2508比例（实际海报尺寸），适配移动端和桌面端 */}
+              <div 
+                className="mb-4 sm:mb-6 rounded-lg overflow-hidden shadow-xl mx-auto bg-black"
+                style={{
+                  width: '100%',
+                  maxWidth: 'min(100%, 500px)',
+                  aspectRatio: '1672 / 2508',
+                  position: 'relative',
+                }}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={posterImage} alt="战报海报" className="w-full h-auto" />
+                <img 
+                  src={posterImage} 
+                  alt="战报海报" 
+                  className="w-full h-full"
+                  style={{
+                    display: 'block',
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                  }}
+                />
               </div>
-              <p className="text-xs text-gray-500 mb-4">长按图片保存或分享给朋友</p>
+              <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4 px-2">
+                长按图片保存或分享给朋友
+              </p>
               <button
                 onClick={resetModal}
-                className="text-sm text-gray-400 hover:text-white underline"
+                className="text-xs sm:text-sm text-gray-400 hover:text-white underline transition-colors"
               >
                 重新选择队伍
               </button>
@@ -213,16 +246,7 @@ export default function PosterModal({ isOpen, onClose }: PosterModalProps) {
         </div>
       </div>
 
-      {/* Hidden Poster Template */}
-      {selectedTeam && (
-        <div
-          ref={posterRef}
-          className="fixed left-[-9999px] top-0 w-[375px] bg-[#0F1115] text-white p-0 overflow-hidden font-sans"
-          style={{ height: '667px' }}
-        >
-          <PosterContent teamId={selectedTeam} />
-        </div>
-      )}
+      {/* Hidden Poster Template - 已使用静态图片，不再需要动态生成 */}
     </div>
   );
 }
