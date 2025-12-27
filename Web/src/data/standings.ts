@@ -1,7 +1,7 @@
 import { StandingEntry } from '@/types';
 
 // 比赛状态：'upcoming' | 'ongoing' | 'finished'
-export const tournamentStatus: 'upcoming' | 'ongoing' | 'finished' = 'upcoming';
+export const tournamentStatus: 'upcoming' | 'ongoing' | 'finished' = 'ongoing';
 
 // 比赛开始日期
 export const tournamentStartDate = '2025-12-28';
