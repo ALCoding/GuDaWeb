@@ -115,13 +115,17 @@ function calculateStandingsFromMatches(matchesData: Match[]): CalculatedStanding
     if (winsA > winsB) {
       teamStats[match.teamA].won += 1;
       teamStats[match.teamB].lost += 1;
-      // 积分规则：2:0 得3分，2:1 得2分
-      teamStats[match.teamA].points += winsA === 2 ? 3 : 2;
+      // 获胜积分规则：2:0胜得3分，2:1胜得2分
+      // winsA === 2 时，如果 winsB === 0 则得3分，如果 winsB === 1 则得2分
+      teamStats[match.teamA].points += winsB === 0 ? 3 : 2;
+      // 战败积分规则：1:2败得1分，0:2败得0分
       teamStats[match.teamB].points += winsB === 1 ? 1 : 0;
     } else if (winsB > winsA) {
       teamStats[match.teamB].won += 1;
       teamStats[match.teamA].lost += 1;
-      teamStats[match.teamB].points += winsB === 2 ? 3 : 2;
+      // 获胜积分规则：2:0胜得3分，2:1胜得2分
+      teamStats[match.teamB].points += winsA === 0 ? 3 : 2;
+      // 战败积分规则：1:2败得1分，0:2败得0分
       teamStats[match.teamA].points += winsA === 1 ? 1 : 0;
     }
     
